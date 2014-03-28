@@ -1,0 +1,19 @@
+{
+  "name": "achelous",
+  "version": "0.0.0",
+  "description": "Achelous - the father of sirens",
+  "main": "achelous.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "Achelous",
+    "Siren",
+    "HATEOAS"
+  ],
+  "author": "DarcInc",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^1.18.2"
+  }
+}
