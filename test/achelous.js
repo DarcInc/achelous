@@ -131,5 +131,20 @@ describe("achelous", function() {
       ach.links[0].rel[0].should.equal("self");
       ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
     });
+
+    it("should take an array as the first argument", function() {
+      ach.addLink(["foo", "bar"], "http://foo.bar.com/bar/1");
+
+      ach.links[0].rel[0].should.equal("foo");
+      ach.links[0].rel[1].should.equal("bar");
+      ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
+    });
+
+    it("should take an object", function() {
+      ach.addLink({ rel: ["foo"], href: 'http://foo.bar.com/bar/1', name: "bar" });
+      ach.links[0].rel[0].should.equal("foo");
+      ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
+      ach.links[0].name.should.equal("bar");
+    })
   });
 });

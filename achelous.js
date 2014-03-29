@@ -48,9 +48,16 @@ module.exports = function(p1, properties) {
       if (_.isString(arguments[0])) {
         this.rel = [arguments[0]];
         this.href = arguments[1];
+      } else if(_.isArray(arguments[0])) {
+        this.rel = arguments[0];
+        this.href = arguments[1];
       }
+    } else if(_.isObject(arguments[0])) {
+      if (arguments[0].rel) this.rel = arguments[0].rel;
+      if (arguments[0].href) this.href = arguments[0].href;
+      if (arguments[0].name) this.name = arguments[0].name;
     }
-  }
+  };
 
   if (_.isString(p1)) {
     this.class = [p1];
@@ -85,6 +92,8 @@ module.exports = function(p1, properties) {
     if (!this.links) { this.links = []; }
     if (arguments.length === 2) {
       this.links.push(new Link(arguments[0], arguments[1]));
+    } else if(arguments.length === 1) {
+      this.links.push(new Link(arguments[0]));
     }
   }
 }
