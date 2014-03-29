@@ -33,6 +33,22 @@ module.exports = function(p1, properties) {
     if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
       this.name = arguments[0];
       this.href = arguments[1];
+    } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+      if (arguments[0].name) this.name = arguments[0].name;
+      if (arguments[0].title) this.title = arguments[0].title;
+      if (arguments[0].method) this.method = arguments[0].method;
+      if (arguments[0].href) this.href = arguments[0].href;
+      if (arguments[0].type) this.type = arguments[0].type;
+      if (arguments[0].fields) this.fields = arguments[0].fields;
+    }
+  };
+
+  var Link = function() {
+    if (arguments.length === 2) {
+      if (_.isString(arguments[0])) {
+        this.rel = [arguments[0]];
+        this.href = arguments[1];
+      }
     }
   }
 
@@ -60,6 +76,15 @@ module.exports = function(p1, properties) {
     if (!this.actions) { this.actions = []; }
     if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
       this.actions.push(new Action(arguments[0], arguments[1]));
+    } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+      this.actions.push(new Action(arguments[0]));
+    }
+  }
+
+  this.addLink = function() {
+    if (!this.links) { this.links = []; }
+    if (arguments.length === 2) {
+      this.links.push(new Link(arguments[0], arguments[1]));
     }
   }
 }

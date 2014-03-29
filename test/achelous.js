@@ -96,5 +96,40 @@ describe("achelous", function() {
       ach.actions[0].name.should.equal("foo");
       ach.actions[0].href.should.equal("http://foo.bar.com/action/1")
     });
+
+    it("should allow us to add an action object", function() {
+      ach.addAction({
+        name: "foobar",
+        title: "This is a title",
+        method: "POST",
+        href: "http://foo.bar.com/bar/1",
+        type: "application/x-www-form-urlencoded",
+        fields: [
+          { name: "age", type: "number", value: 5 }
+        ]
+      });
+
+      ach.actions[0].name.should.equal("foobar");
+      ach.actions[0].title.should.equal("This is a title");
+      ach.actions[0].method.should.equal("POST")
+      ach.actions[0].fields[0].name.should.equal("age");
+      ach.actions[0].fields[0].type.should.equal("number");
+      ach.actions[0].fields[0].value.should.equal(5);
+    });
+  });
+
+  describe("Links", function() {
+    var ach;
+
+    beforeEach(function() {
+      ach = new Achelous("foo", {bar: "baz"});
+    });
+
+    it("should allow you to add a link", function() {
+      ach.addLink("self", "http://foo.bar.com/bar/1");
+
+      ach.links[0].rel[0].should.equal("self");
+      ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
+    });
   });
 });
