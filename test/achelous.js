@@ -145,6 +145,8 @@ describe("achelous", function() {
       ach.links[0].rel[0].should.equal("foo");
       ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
       ach.links[0].name.should.equal("bar");
+
+      console.log(ach);
     })
   });
 });

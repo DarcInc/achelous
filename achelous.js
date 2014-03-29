@@ -1,6 +1,7 @@
 /**
  * Created by phoehne on 3/28/14.
  */
+"user strict";
 
 var _ = require('lodash');
 
@@ -28,6 +29,7 @@ module.exports = function(p1, properties) {
     }
     return self;
   };
+
 
   var Action = function() {
     if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
@@ -69,31 +71,43 @@ module.exports = function(p1, properties) {
     this.properties = properties;
   }
 
-  this.addEntity = function() {
-    if(!this.entities) { this.entities = []; }
-    if (arguments.length === 2 && _.isString(arguments[0]) &&_.isString(arguments[1])) {
-      this.entities.push(new Entity(arguments[0], arguments[1]));
-    } else if(arguments.length === 1 && _.isObject(arguments[0])) {
-      this.entities.push(new Entity(arguments[0]));
+  Object.defineProperty(this, "addEntity", {
+    enumerable: false,
+    value: function() {
+      if(!this.entities) { this.entities = []; }
+      if (arguments.length === 2 && _.isString(arguments[0]) &&_.isString(arguments[1])) {
+        this.entities.push(new Entity(arguments[0], arguments[1]));
+      } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+        this.entities.push(new Entity(arguments[0]));
+      }
+      return this;
     }
-    return this;
-  }
+  });
 
-  this.addAction = function() {
-    if (!this.actions) { this.actions = []; }
-    if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
-      this.actions.push(new Action(arguments[0], arguments[1]));
-    } else if(arguments.length === 1 && _.isObject(arguments[0])) {
-      this.actions.push(new Action(arguments[0]));
+  Object.defineProperty(this, "addAction", {
+    enumerable: false,
+    value: function() {
+      if (!this.actions) { this.actions = []; }
+      if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
+        this.actions.push(new Action(arguments[0], arguments[1]));
+      } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+        this.actions.push(new Action(arguments[0]));
+      }
     }
-  }
+  });
 
-  this.addLink = function() {
-    if (!this.links) { this.links = []; }
-    if (arguments.length === 2) {
-      this.links.push(new Link(arguments[0], arguments[1]));
-    } else if(arguments.length === 1) {
-      this.links.push(new Link(arguments[0]));
+  Object.defineProperty(this, "addLink", {
+    enumerable: false,
+    value: function() {
+      if (!this.links) {
+        this.links = [];
+      }
+      if (arguments.length === 2) {
+        this.links.push(new Link(arguments[0], arguments[1]));
+      } else if (arguments.length === 1) {
+        this.links.push(new Link(arguments[0]));
+      }
     }
-  }
-}
+  });
+
+};
