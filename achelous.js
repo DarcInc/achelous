@@ -1,7 +1,7 @@
 /**
  * Created by phoehne on 3/28/14.
  */
-"user strict";
+"use strict";
 
 var _ = require('lodash');
 
@@ -18,19 +18,47 @@ module.exports = function(p1, properties) {
       if (arguments[0].href) { this.href = arguments[0].href; }
       if (arguments[0].links)  { this.links = arguments[0].links; }
     }
-    var self = this;
 
     Object.defineProperty(this, "addLink", {
       enumerable: false,
       value: function(rel, href) {
-        if (!self.links) {
-          self.links = [];
+        if (!this.links) {
+          this.links = [];
         }
-        self.links.push({rel: rel, href: href});
-        return self;
+        if (arguments.length === 2) {
+          this.links.push(new Link(arguments[0], arguments[1]));
+        } else if (arguments.length === 1) {
+          this.links.push(new Link(arguments[0]));
+        }
+        return this;
       }
     });
-    return self;
+
+    Object.defineProperty(this, "addEntity", {
+      enumerable: false,
+      value: function() {
+        if(!this.entities) { this.entities = []; }
+        if (arguments.length === 2 && _.isString(arguments[0]) &&_.isString(arguments[1])) {
+          this.entities.push(new Entity(arguments[0], arguments[1]));
+        } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+          this.entities.push(new Entity(arguments[0]));
+        }
+        return this;
+      }
+    });
+
+    Object.defineProperty(this, 'addAction', {
+      enumerable: false,
+      value: function() {
+        if (!this.actions) { this.actions = []; }
+        if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
+          this.actions.push(new Action(arguments[0], arguments[1]));
+        } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+          this.actions.push(new Action(arguments[0]));
+        }
+        return this;
+      }
+    })
   };
 
 
@@ -74,7 +102,6 @@ module.exports = function(p1, properties) {
     this.properties = properties;
   }
 
-  var rootSelf = this;
   Object.defineProperty(this, "addEntity", {
     enumerable: false,
     value: function() {
@@ -88,6 +115,21 @@ module.exports = function(p1, properties) {
     }
   });
 
+  Object.defineProperty(this, "makeEntity", {
+    enumerable: false,
+    value: function() {
+      if(!this.entities) { this.entities = []; }
+      var newEntity;
+      if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
+        newEntity = new Entity(arguments[0], arguments[1]);
+      } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+        newEntity = new Entity(arguments[1])
+      }
+      this.entities.push(newEntity);
+      return newEntity;
+    }
+  })
+
   Object.defineProperty(this, "addAction", {
     enumerable: false,
     value: function() {
@@ -98,6 +140,21 @@ module.exports = function(p1, properties) {
         this.actions.push(new Action(arguments[0]));
       }
       return this;
+    }
+  });
+
+  Object.defineProperty(this, "makeAction", {
+    enumerable: false,
+    value: function() {
+      if (!this.actions) { this.actions = []; }
+      var newAction;
+      if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
+        newAction = new Action(arguments[0], arguments[1]);
+      } else if(arguments.length === 1 && _.isObject(arguments[0])) {
+        newAction = new Action(arguments[0]);
+      }
+      this.actions.push(newAction);
+      return newAction;
     }
   });
 

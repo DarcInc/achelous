@@ -84,7 +84,63 @@ describe("achelous", function() {
     it("should return the root object for message chaining", function() {
       var result = ach.addEntity("http://mydomain.com/relationship", "http://mydomain.com/foo/1234");
       result.should.equal(ach);
-    })
+    });
+
+    it("should allow you to add entities to an entity", function() {
+      ach.addEntity({
+        class: ['foo', 'bar'],
+        rel: ["http://foo.bar.com/myrelation"],
+        properties: {
+          propOne: "boo"
+        },
+        links: [
+          { rel: ["self"], href: "http//foo.bar.com/foo/1234" }
+        ]
+      });
+      ach.entities[0].addEntity("able", "http://foo.bar.com/able/baker");
+      ach.entities[0].entities[0].rel.should.equal("able");
+      ach.entities[0].entities[0].href.should.equal("http://foo.bar.com/able/baker");
+    });
+
+    it("should allow you add an action to an entity", function() {
+      ach.addEntity({
+        class: ['foo', 'bar'],
+        rel: ["http://foo.bar.com/myrelation"],
+        properties: {
+          propOne: "boo"
+        },
+        links: [
+          { rel: ["self"], href: "http//foo.bar.com/foo/1234" }
+        ]
+      });
+
+      ach.entities[0].addAction({
+        name: "foobar",
+        title: "This is a title",
+        method: "POST",
+        href: "http://foo.bar.com/bar/1",
+        type: "application/x-www-form-urlencoded",
+        fields: [
+          { name: "age", type: "number", value: 5 }
+        ]
+      });
+      ach.entities[0].actions[0].name.should.equal("foobar");
+      ach.entities[0].actions[0].method.should.equal("POST");
+    });
+
+    it("should have a make function that returns the new entity", function() {
+      var newEntity = ach.makeEntity({
+        class: ['foo', 'bar'],
+        rel: ["http://foo.bar.com/myrelation"],
+        properties: {
+          propOne: "boo"
+        },
+        links: [
+          { rel: ["self"], href: "http//foo.bar.com/foo/1234" }
+        ]
+      });
+      newEntity.should.equal(ach.entities[0]);
+    });
   });
 
   describe("Actions", function() {
@@ -126,6 +182,13 @@ describe("achelous", function() {
       var result = ach.addAction("foo", "http://foo.bar.com/action/1");
       result.should.equal(ach);
     });
+
+    it("should have a makeAction funciton that returns the action", function() {
+      var newAction = ach.makeAction("foo", "http://foo.bar.com/action/1");
+      newAction.should.equal(ach.actions[0]);
+
+      ach.actions[0].name.should.equal('foo');
+    })
   });
 
   describe("Links", function() {
