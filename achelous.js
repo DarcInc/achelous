@@ -20,13 +20,16 @@ module.exports = function(p1, properties) {
     }
     var self = this;
 
-    this.addLink = function(rel, href) {
-      if (!self.links) {
-        self.links = [];
+    Object.defineProperty(this, "addLink", {
+      enumerable: false,
+      value: function(rel, href) {
+        if (!self.links) {
+          self.links = [];
+        }
+        self.links.push({rel: rel, href: href});
+        return self;
       }
-      self.links.push({rel: rel, href: href});
-      return self;
-    }
+    });
     return self;
   };
 
@@ -71,6 +74,7 @@ module.exports = function(p1, properties) {
     this.properties = properties;
   }
 
+  var rootSelf = this;
   Object.defineProperty(this, "addEntity", {
     enumerable: false,
     value: function() {
@@ -93,6 +97,7 @@ module.exports = function(p1, properties) {
       } else if(arguments.length === 1 && _.isObject(arguments[0])) {
         this.actions.push(new Action(arguments[0]));
       }
+      return this;
     }
   });
 
@@ -107,6 +112,7 @@ module.exports = function(p1, properties) {
       } else if (arguments.length === 1) {
         this.links.push(new Link(arguments[0]));
       }
+      return this;
     }
   });
 

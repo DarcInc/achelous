@@ -79,6 +79,11 @@ describe("achelous", function() {
       ach.entities[0].links[1].rel[0].should.equal("other");
       ach.entities[0].links[1].rel[1].should.equal("foo");
       ach.entities[0].links[1].href.should.equal("http://foo.bar.com/bar/1235");
+    });
+
+    it("should return the root object for message chaining", function() {
+      var result = ach.addEntity("http://mydomain.com/relationship", "http://mydomain.com/foo/1234");
+      result.should.equal(ach);
     })
   });
 
@@ -116,6 +121,11 @@ describe("achelous", function() {
       ach.actions[0].fields[0].type.should.equal("number");
       ach.actions[0].fields[0].value.should.equal(5);
     });
+
+    it("should return the root object for method chaining", function() {
+      var result = ach.addAction("foo", "http://foo.bar.com/action/1");
+      result.should.equal(ach);
+    });
   });
 
   describe("Links", function() {
@@ -145,8 +155,11 @@ describe("achelous", function() {
       ach.links[0].rel[0].should.equal("foo");
       ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
       ach.links[0].name.should.equal("bar");
+    });
 
-      console.log(ach);
-    })
+    it("should return itself for method chaining", function() {
+      var result = ach.addLink({ rel: ["foo"], href: 'http://foo.bar.com/bar/1', name: "bar" });
+      result.should.equal(ach);
+    });
   });
 });
