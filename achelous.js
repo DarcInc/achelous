@@ -25,8 +25,12 @@ module.exports = function(p1, properties) {
         if (!this.links) {
           this.links = [];
         }
-        if (arguments.length === 2) {
-          this.links.push(new Link(arguments[0], arguments[1]));
+        if (arguments.length >= 2) {
+          var newLink = new Link(arguments[0], arguments[1]);
+          if (arguments.length === 3) {
+            newLink.title = arguments[2];
+          }
+          this.links.push(newLink);
         } else if (arguments.length === 1) {
           this.links.push(new Link(arguments[0]));
         }
@@ -58,7 +62,7 @@ module.exports = function(p1, properties) {
         }
         return this;
       }
-    })
+    });
   };
 
 
@@ -72,12 +76,30 @@ module.exports = function(p1, properties) {
       if (arguments[0].method) this.method = arguments[0].method;
       if (arguments[0].href) this.href = arguments[0].href;
       if (arguments[0].type) this.type = arguments[0].type;
+      else this.type = "application/x-www-form-urlencoded";
       if (arguments[0].fields) this.fields = arguments[0].fields;
     }
+
+    Object.defineProperty(this, "addField", {
+      enumerable: false,
+      value: function() {
+        if (!this.fields) { this.fields = []; }
+
+        var newField = {}
+        if (arguments.length >= 1) { newField.name = arguments[0]; };
+        if (arguments.length >= 2) { newField.type = arguments[1]; }
+        else { newField.type = "text" }
+        if (arguments.length >= 3) { newField.value = arguments[2].toString() }
+        if (arguments.length === 4) { newField.title = arguments[3]; }
+
+        this.fields.push(newField);
+        return this;
+      }
+    });
   };
 
   var Link = function() {
-    if (arguments.length === 2) {
+    if (arguments.length >= 2) {
       if (_.isString(arguments[0])) {
         this.rel = [arguments[0]];
         this.href = arguments[1];
@@ -85,10 +107,13 @@ module.exports = function(p1, properties) {
         this.rel = arguments[0];
         this.href = arguments[1];
       }
+      if (arguments.length === 3) {
+        this.title = arguments[2];
+      }
     } else if(_.isObject(arguments[0])) {
       if (arguments[0].rel) this.rel = arguments[0].rel;
       if (arguments[0].href) this.href = arguments[0].href;
-      if (arguments[0].name) this.name = arguments[0].name;
+      if (arguments[0].title) this.title = arguments[0].title;
     }
   };
 
@@ -164,8 +189,12 @@ module.exports = function(p1, properties) {
       if (!this.links) {
         this.links = [];
       }
-      if (arguments.length === 2) {
-        this.links.push(new Link(arguments[0], arguments[1]));
+      if (arguments.length >= 2) {
+        var newLink = new Link(arguments[0], arguments[1]);
+        if (arguments.length === 3) {
+          newLink.title = arguments[2];
+        }
+        this.links.push(newLink);
       } else if (arguments.length === 1) {
         this.links.push(new Link(arguments[0]));
       }

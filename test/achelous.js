@@ -75,10 +75,15 @@ describe("achelous", function() {
         ]
       });
       ach.entities[0].addLink(["other", "foo"], "http://foo.bar.com/bar/1235");
+      ach.entities[0].addLink("bar", "http://foo.bar.com/bar/1235", "title");
 
       ach.entities[0].links[1].rel[0].should.equal("other");
       ach.entities[0].links[1].rel[1].should.equal("foo");
       ach.entities[0].links[1].href.should.equal("http://foo.bar.com/bar/1235");
+
+      ach.entities[0].links[2].rel[0].should.equal("bar");
+      ach.entities[0].links[2].href.should.equal("http://foo.bar.com/bar/1235");
+      ach.entities[0].links[2].title.should.equal("title");
     });
 
     it("should return the root object for message chaining", function() {
@@ -188,7 +193,35 @@ describe("achelous", function() {
       newAction.should.equal(ach.actions[0]);
 
       ach.actions[0].name.should.equal('foo');
-    })
+    });
+
+    describe("Action Methods", function() {
+      var newAction;
+
+      beforeEach(function() {
+        newAction = ach.makeAction("foo", "http://foo.bar.com/action/1");
+      })
+
+      it("should have a method to add fields", function() {
+        newAction.addField("fullField", "email", "bar", "This is the foo");
+        newAction.addField("partialField");
+        newAction.addField("partial2", "number");
+        newAction.addField("partial3", "tel", "7035551212");
+
+        newAction.fields.length.should.equal(4);
+        newAction.fields[0].name.should.equal("fullField");
+        newAction.fields[0].type.should.equal("email");
+        newAction.fields[0].value.should.equal("bar");
+        newAction.fields[0].title.should.equal("This is the foo");
+        newAction.fields[1].name.should.equal("partialField");
+        newAction.fields[1].type.should.equal("text");
+        newAction.fields[2].name.should.equal("partial2");
+        newAction.fields[2].type.should.equal("number");
+        newAction.fields[3].name.should.equal("partial3");
+        newAction.fields[3].type.should.equal("tel");
+
+      });
+    });
   });
 
   describe("Links", function() {
@@ -203,6 +236,9 @@ describe("achelous", function() {
 
       ach.links[0].rel[0].should.equal("self");
       ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
+
+      ach.addLink("self", "http://foo.bar.com/bar/1", "Some link");
+      ach.links[1].title.should.equal("Some link");
     });
 
     it("should take an array as the first argument", function() {
@@ -214,10 +250,10 @@ describe("achelous", function() {
     });
 
     it("should take an object", function() {
-      ach.addLink({ rel: ["foo"], href: 'http://foo.bar.com/bar/1', name: "bar" });
+      ach.addLink({ rel: ["foo"], href: 'http://foo.bar.com/bar/1', title: "bar" });
       ach.links[0].rel[0].should.equal("foo");
       ach.links[0].href.should.equal("http://foo.bar.com/bar/1");
-      ach.links[0].name.should.equal("bar");
+      ach.links[0].title.should.equal("bar");
     });
 
     it("should return itself for method chaining", function() {
