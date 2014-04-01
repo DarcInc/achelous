@@ -16,5 +16,8 @@
   "devDependencies": {
     "mocha": "^1.18.2",
     "should": "^3.2.0-beta1"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1"
   }
 }
