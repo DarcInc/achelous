@@ -1,6 +1,6 @@
 {
   "name": "achelous",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Achelous - the father of sirens",
   "main": "achelous.js",
   "scripts": {
