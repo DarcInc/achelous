@@ -145,7 +145,14 @@ describe("achelous", function() {
         ]
       });
       newEntity.should.equal(ach.entities[0]);
+      newEntity.class[0].should.equal("foo");
     });
+
+    it("should have a function that creates a minimal entity", function() {
+      var newEntity = ach.makeEntity("foo", "http://foo.bar.com/foo/1234");
+      newEntity.should.equal(ach.entities[0]);
+      newEntity.rel.should.equal("foo");
+    })
   });
 
   describe("Actions", function() {

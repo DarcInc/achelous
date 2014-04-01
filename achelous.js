@@ -148,9 +148,10 @@ module.exports = function(p1, properties) {
       if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
         newEntity = new Entity(arguments[0], arguments[1]);
       } else if(arguments.length === 1 && _.isObject(arguments[0])) {
-        newEntity = new Entity(arguments[1])
+        newEntity = new Entity(arguments[0])
       }
       this.entities.push(newEntity);
+      console.log(newEntity);
       return newEntity;
     }
   })
