@@ -9,7 +9,7 @@ var _ = require('lodash');
 module.exports = function(p1, properties) {
   var Entity = function() {
     if (arguments.length === 2 && _.isString(arguments[0]) && _.isString(arguments[1])) {
-      this.rel = arguments[0];
+      this.rel = [arguments[0]];
       this.href = arguments[1];
     } else if(arguments.length === 1 && _.isObject(arguments[0])) {
       if (arguments[0].class) { this.class = arguments[0].class; }

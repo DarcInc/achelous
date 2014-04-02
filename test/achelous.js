@@ -40,7 +40,7 @@ describe("achelous", function() {
 
     it("should allow adding entities with required fields", function() {
       ach.addEntity("http://mydomain.com/relationship", "http://mydomain.com/foo/1234");
-      ach.entities[0].rel.should.equal("http://mydomain.com/relationship");
+      ach.entities[0].rel[0].should.equal("http://mydomain.com/relationship");
       ach.entities[0].href.should.equal("http://mydomain.com/foo/1234");
     });
 
@@ -103,7 +103,7 @@ describe("achelous", function() {
         ]
       });
       ach.entities[0].addEntity("able", "http://foo.bar.com/able/baker");
-      ach.entities[0].entities[0].rel.should.equal("able");
+      ach.entities[0].entities[0].rel[0].should.equal("able");
       ach.entities[0].entities[0].href.should.equal("http://foo.bar.com/able/baker");
     });
 
@@ -146,13 +146,15 @@ describe("achelous", function() {
       });
       newEntity.should.equal(ach.entities[0]);
       newEntity.class[0].should.equal("foo");
+      newEntity.rel[0].should.equal("http://foo.bar.com/myrelation")
     });
 
     it("should have a function that creates a minimal entity", function() {
       var newEntity = ach.makeEntity("foo", "http://foo.bar.com/foo/1234");
       newEntity.should.equal(ach.entities[0]);
-      newEntity.rel.should.equal("foo");
-    })
+      newEntity.rel[0].should.equal("foo");
+      newEntity.href.should.equal("http://foo.bar.com/foo/1234")
+    });
   });
 
   describe("Actions", function() {
